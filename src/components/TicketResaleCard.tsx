@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, User } from "lucide-react";
 
-interface TicketResaleCardProps {
+export interface TicketResaleCardProps {
   id: string;
   eventName: string;
   image: string;

@@ -109,12 +109,12 @@ const Resell = () => {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="original-price">Original Price ($)</Label>
+                      <Label htmlFor="original-price">Original Price (₦)</Label>
                       <Input id="original-price" type="number" min="0" step="0.01" required />
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="selling-price">Asking Price ($)</Label>
+                      <Label htmlFor="selling-price">Asking Price (₦)</Label>
                       <Input id="selling-price" type="number" min="0" step="0.01" required />
                     </div>
                   </div>

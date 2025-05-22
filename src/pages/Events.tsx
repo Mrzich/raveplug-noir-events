@@ -10,13 +10,13 @@ import { Slider } from "@/components/ui/slider";
 
 const Events = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 200]);
+  const [priceRange, setPriceRange] = useState([0, 200000]);
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [selectedDate, setSelectedDate] = useState("all");
   
   // Filter events based on search query
   const filteredEvents = mockEvents.filter((event) => {
-    return event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    return event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
            event.location.toLowerCase().includes(searchQuery.toLowerCase());
   });
   
@@ -83,16 +83,16 @@ const Events = () => {
             <span className="text-sm font-medium min-w-[80px]">Price Range:</span>
             <div className="flex-1">
               <Slider
-                defaultValue={[0, 200]}
-                max={200}
-                step={5}
+                defaultValue={[0, 200000]}
+                max={200000}
+                step={5000}
                 value={priceRange}
                 onValueChange={setPriceRange}
                 className="my-4"
               />
               <div className="flex justify-between text-sm text-gray-600">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+                <span>₦{priceRange[0].toLocaleString()}</span>
+                <span>₦{priceRange[1].toLocaleString()}</span>
               </div>
             </div>
           </div>

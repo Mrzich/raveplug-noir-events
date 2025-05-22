@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { formatDistance } from "date-fns";
 
-interface EventCardProps {
+export interface EventCardProps {
   id: string;
   name: string;
   image: string;
