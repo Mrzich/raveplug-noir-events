@@ -2,18 +2,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 
-const SignUp = () => {
+const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
@@ -21,8 +20,8 @@ const SignUp = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
-        title: "Account created!",
-        description: "You have successfully signed up.",
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
       });
       navigate("/");
     }, 1500);
@@ -41,65 +40,47 @@ const SignUp = () => {
         
         <Card className="border border-white/10 bg-black text-white">
           <CardHeader>
-            <CardTitle className="text-xl">Create an account</CardTitle>
+            <CardTitle className="text-xl">Sign in to your account</CardTitle>
             <CardDescription className="text-gray-400">
-              Enter your details to get started with The Rave Plug
+              Welcome back to The Rave Plug
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First name</Label>
-                  <Input id="firstName" placeholder="John" required className="bg-rave-gray/10 border-white/20 text-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Last name</Label>
-                  <Input id="lastName" placeholder="Doe" required className="bg-rave-gray/10 border-white/20 text-white" />
-                </div>
-              </div>
-              
+            <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="john@example.com" required className="bg-rave-gray/10 border-white/20 text-white" />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <a href="#" className="text-sm text-white hover:text-gray-300 underline">
+                    Forgot password?
+                  </a>
+                </div>
                 <Input id="password" type="password" required className="bg-rave-gray/10 border-white/20 text-white" />
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input id="confirmPassword" type="password" required className="bg-rave-gray/10 border-white/20 text-white" />
-              </div>
-              
-              <div className="flex items-center space-x-2 pt-2">
-                <Checkbox id="terms" required />
+              <div className="flex items-center space-x-2">
+                <Checkbox id="remember" />
                 <label
-                  htmlFor="terms"
+                  htmlFor="remember"
                   className="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  I agree to the{" "}
-                  <a href="#" className="text-white underline hover:text-gray-300">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="text-white underline hover:text-gray-300">
-                    Privacy Policy
-                  </a>
+                  Remember me
                 </label>
               </div>
               
               <Button type="submit" className="w-full bg-white text-black hover:bg-gray-200" disabled={isSubmitting}>
-                {isSubmitting ? "Signing up..." : "Create Account"}
+                {isSubmitting ? "Signing in..." : "Sign In"}
               </Button>
               
               <div className="text-center mt-4">
                 <p className="text-sm text-gray-400">
-                  Already have an account?{" "}
-                  <Link to="/signin" className="text-white underline hover:text-gray-300">
-                    Sign in
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="text-white underline hover:text-gray-300">
+                    Sign up
                   </Link>
                 </p>
               </div>
@@ -117,4 +98,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

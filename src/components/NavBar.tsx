@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn, UserPlus } from "lucide-react";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,11 +51,20 @@ const NavBar = () => {
             >
               Create Event
             </Link>
-            <Link to="/signup">
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black transition-colors">
-                Sign Up
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-2">
+              <Link to="/signin">
+                <Button variant="ghost" className="text-white hover:bg-white/10 flex items-center gap-2">
+                  <LogIn size={16} />
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black transition-colors flex items-center gap-2">
+                  <UserPlus size={16} />
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
           </nav>
           
           {/* Mobile menu button */}
@@ -101,10 +110,22 @@ const NavBar = () => {
               Create Event
             </Link>
             <Link 
+              to="/signin"
+              onClick={() => setIsMenuOpen(false)}
+              className="block"
+            >
+              <Button variant="ghost" className="w-full text-white hover:bg-white/10 justify-start">
+                <LogIn size={16} className="mr-2" />
+                Sign In
+              </Button>
+            </Link>
+            <Link 
               to="/signup"
               onClick={() => setIsMenuOpen(false)}
+              className="block"
             >
-              <Button variant="outline" className="w-full text-white border-white hover:bg-white hover:text-black transition-colors">
+              <Button variant="outline" className="w-full text-white border-white hover:bg-white hover:text-black transition-colors justify-start">
+                <UserPlus size={16} className="mr-2" />
                 Sign Up
               </Button>
             </Link>

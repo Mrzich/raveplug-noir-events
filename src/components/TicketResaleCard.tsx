@@ -1,71 +1,94 @@
 
+import React from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Ticket, Calendar, User } from "lucide-react";
+import { Calendar, MapPin, User } from "lucide-react";
 
-export interface TicketResaleProps {
+interface TicketResaleCardProps {
   id: string;
   eventName: string;
-  eventDate: string;
-  originalPrice: string;
-  sellingPrice: string;
-  sellerName: string;
-  location: string;
   image: string;
+  date: string;
+  location: string;
+  originalPrice: number;
+  resalePrice: number;
+  sellerName: string;
+  sellerRating: number;
 }
 
-const TicketResaleCard = ({ 
-  id, 
-  eventName, 
-  eventDate, 
-  originalPrice, 
-  sellingPrice, 
-  sellerName, 
+const TicketResaleCard: React.FC<TicketResaleCardProps> = ({
+  id,
+  eventName,
+  image,
+  date,
   location,
-  image 
-}: TicketResaleProps) => {
+  originalPrice,
+  resalePrice,
+  sellerName,
+  sellerRating,
+}) => {
+  // Calculate discount or markup percentage
+  const priceDiff = resalePrice - originalPrice;
+  const percentageDiff = Math.round((priceDiff / originalPrice) * 100);
+  const isDiscount = percentageDiff < 0;
+
   return (
-    <Card className="bg-white text-black overflow-hidden border border-gray-200 card-hover">
-      <div className="relative h-40 overflow-hidden">
+    <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative h-40 w-full">
         <img
-          src={image}
+          src={image || "/placeholder.svg"}
           alt={eventName}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/30"></div>
-        <div className="absolute top-2 right-2 bg-white text-black px-2 py-1 text-sm font-semibold rounded flex items-center">
-          <span className="text-gray-500 line-through mr-1">{originalPrice}</span>
-          {sellingPrice}
-        </div>
+        {isDiscount ? (
+          <div className="absolute top-2 right-2">
+            <Badge className="bg-green-600 text-white">
+              {Math.abs(percentageDiff)}% Off
+            </Badge>
+          </div>
+        ) : percentageDiff > 0 ? (
+          <div className="absolute top-2 right-2">
+            <Badge className="bg-amber-500 text-white">
+              {percentageDiff}% Markup
+            </Badge>
+          </div>
+        ) : null}
       </div>
-      
-      <CardContent className="pt-4">
-        <h3 className="font-bold text-lg mb-2 line-clamp-1">{eventName}</h3>
-        
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg line-clamp-2 mb-2">{eventName}</h3>
         <div className="space-y-2 text-sm">
-          <div className="flex items-center text-gray-700">
-            <Calendar size={14} className="mr-2" />
-            <span>{eventDate}</span>
+          <div className="flex items-center gap-2">
+            <Calendar size={14} />
+            <p>{new Date(date).toLocaleDateString()}</p>
           </div>
-          
-          <div className="flex items-center text-gray-700">
-            <Ticket size={14} className="mr-2" />
-            <span>{location}</span>
+          <div className="flex items-center gap-2">
+            <MapPin size={14} />
+            <p className="line-clamp-1">{location}</p>
           </div>
-          
-          <div className="flex items-center text-gray-700">
-            <User size={14} className="mr-2" />
-            <span>Seller: {sellerName}</span>
+          <div className="flex items-center gap-2">
+            <User size={14} />
+            <p>
+              {sellerName} • {Array(5)
+                .fill(0)
+                .map((_, i) => (
+                  <span key={i} className={i < sellerRating ? "text-yellow-500" : "text-gray-300"}>
+                    ★
+                  </span>
+                ))}
+            </p>
           </div>
         </div>
       </CardContent>
-      
-      <CardFooter className="flex justify-between pt-0 pb-4">
-        <Button
-          variant="default"
-          className="w-full bg-black text-white hover:bg-gray-800"
-        >
-          Purchase Ticket
+      <CardFooter className="p-4 pt-0 flex justify-between items-center border-t border-gray-100 mt-2">
+        <div>
+          <div className="font-bold">₦{resalePrice.toLocaleString()}</div>
+          <div className="text-xs text-gray-500">
+            Original: ₦{originalPrice.toLocaleString()}
+          </div>
+        </div>
+        <Button className="bg-black text-white hover:bg-gray-800">
+          Buy Ticket
         </Button>
       </CardFooter>
     </Card>

@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Events from "./pages/Events";
 import CreateEvent from "./pages/CreateEvent";
 import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 import Resell from "./pages/Resell";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="resell" element={<Resell />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
