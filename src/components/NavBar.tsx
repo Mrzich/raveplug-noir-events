@@ -1,137 +1,105 @@
 
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogIn, UserPlus } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import useMobile from "@/hooks/use-mobile";
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-  
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isMobile = useMobile();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Events", href: "/events" },
+    { label: "Resell", href: "/resell" },
+    { label: "Dashboard", href: "/dashboard" },
+  ];
 
   return (
-    <header className="bg-black text-white sticky top-0 z-50 border-b border-rave-accent/20">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center space-x-2 logo-container">
-            <img 
-              src="/lovable-uploads/d4104dcc-7899-4b43-bc04-26d48fd53b29.png" 
-              alt="The Rave Plug Logo" 
-              className="h-12"
-            />
-            <span className="text-xl font-bold tracking-tight">The Rave Plug</span>
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 items-center">
-            <Link 
-              to="/" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/') ? 'text-white border-b-2 border-white pb-1' : 'text-gray-300'}`}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/events" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/events') ? 'text-white border-b-2 border-white pb-1' : 'text-gray-300'}`}
-            >
-              Events
-            </Link>
-            <Link 
-              to="/resell" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/resell') ? 'text-white border-b-2 border-white pb-1' : 'text-gray-300'}`}
-            >
-              Resell Tickets
-            </Link>
-            <Link 
-              to="/create-event" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/create-event') ? 'text-white border-b-2 border-white pb-1' : 'text-gray-300'}`}
-            >
-              Create Event
-            </Link>
-            <div className="flex items-center space-x-2">
-              <Link to="/signin">
-                <Button variant="ghost" className="text-white hover:bg-white/10 flex items-center gap-2">
-                  <LogIn size={16} />
-                  Sign In
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black transition-colors flex items-center gap-2">
-                  <UserPlus size={16} />
-                  Sign Up
-                </Button>
-              </Link>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        isScrolled ? "bg-black/85 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
+      <div className="container flex h-16 items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <img
+            src="/lovable-uploads/d4104dcc-7899-4b43-bc04-26d48fd53b29.png"
+            alt="RavePlug Logo"
+            className="w-8 h-8"
+          />
+          <span className="font-bold text-lg text-white">RavePlug</span>
+        </Link>
+
+        {isMobile ? (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-white">
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="bg-black text-white">
+              <div className="flex flex-col gap-4 mt-8">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    to={item.href}
+                    className={({ isActive }) =>
+                      `p-2 hover:bg-gray-800 ${isActive ? "text-white font-semibold" : "text-gray-300"}`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+                <hr className="border-gray-800 my-2" />
+                <div className="flex flex-col gap-2">
+                  <Button asChild variant="outline" className="border-white text-white hover:bg-white hover:text-black">
+                    <Link to="/signin">Sign In</Link>
+                  </Button>
+                  <Button asChild className="bg-white text-black hover:bg-gray-200">
+                    <Link to="/signup">Sign Up</Link>
+                  </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        ) : (
+          <nav className="flex items-center gap-6">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                className={({ isActive }) =>
+                  `text-sm transition-colors hover:text-white ${
+                    isActive ? "text-white font-medium" : "text-gray-300"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+            <div className="flex items-center gap-4">
+              <Button asChild variant="outline" className="border-white text-white hover:bg-white hover:text-black">
+                <Link to="/signin">Sign In</Link>
+              </Button>
+              <Button asChild className="bg-white text-black hover:bg-gray-200">
+                <Link to="/signup">Sign Up</Link>
+              </Button>
             </div>
           </nav>
-          
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden text-white"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        )}
       </div>
-      
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-black border-t border-rave-accent/20">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            <Link 
-              to="/" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/') ? 'text-white' : 'text-gray-300'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/events" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/events') ? 'text-white' : 'text-gray-300'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Events
-            </Link>
-            <Link 
-              to="/resell" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/resell') ? 'text-white' : 'text-gray-300'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Resell Tickets
-            </Link>
-            <Link 
-              to="/create-event" 
-              className={`text-sm font-medium hover:text-rave-accent transition-colors ${isActive('/create-event') ? 'text-white' : 'text-gray-300'}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Create Event
-            </Link>
-            <Link 
-              to="/signin"
-              onClick={() => setIsMenuOpen(false)}
-              className="block"
-            >
-              <Button variant="ghost" className="w-full text-white hover:bg-white/10 justify-start">
-                <LogIn size={16} className="mr-2" />
-                Sign In
-              </Button>
-            </Link>
-            <Link 
-              to="/signup"
-              onClick={() => setIsMenuOpen(false)}
-              className="block"
-            >
-              <Button variant="outline" className="w-full text-white border-white hover:bg-white hover:text-black transition-colors justify-start">
-                <UserPlus size={16} className="mr-2" />
-                Sign Up
-              </Button>
-            </Link>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

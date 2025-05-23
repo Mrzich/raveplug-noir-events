@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import Events from "./pages/Events";
+import Dashboard from "./pages/Dashboard";
 import CreateEvent from "./pages/CreateEvent";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/" element={<Layout />}>
             <Route index element={<Index />} />
             <Route path="events" element={<Events />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="create-event" element={<CreateEvent />} />
             <Route path="resell" element={<Resell />} />
           </Route>
